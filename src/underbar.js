@@ -332,7 +332,6 @@
     return function() {
       var args = JSON.stringify(arguments);
       if (!results.hasOwnProperty(args)) {
-
         results[args] = func.apply(this, arguments);
       }
 
@@ -348,6 +347,11 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    var args = Array.from(arguments).slice(2);
+    setTimeout(function() {
+      func.apply(this, args);
+    }, wait);
+
   };
 
 
@@ -362,6 +366,20 @@
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+    var dup = array.slice(0);
+
+    for (var x = 0; x < dup.length; x++) {
+
+      var i = Math.floor(Math.random() * dup.length);
+
+      var random = dup[i];
+      var holder = dup[x];
+
+      dup[x] = random;
+      dup[i] = holder;
+    }
+    return dup;
+
   };
 
 
